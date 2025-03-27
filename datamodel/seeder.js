@@ -15,5 +15,11 @@ module.exports = async (userAccountService, carService) => {
                 reject(e)
             }
         }
+        try {
+            await userAccountService.insert("admin", "admin", "admin");
+        }catch(e) {
+            console.log(e)
+            reject(e)
+        }
     })
 }
