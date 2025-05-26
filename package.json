@@ -3,7 +3,6 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
-    "mocha": "^10.4.0",
     "chai": "^4.4.1",
     "chai-http": "^4.4.0",
     "cookie-parser": "^1.4.6",
@@ -11,8 +10,10 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "mocha": "^10.4.0",
     "morgan": "^1.10.0",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "punycode": "^2.3.1"
   },
   "scripts": {
     "run-server": "node main.js",
