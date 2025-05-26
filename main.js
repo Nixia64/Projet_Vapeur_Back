@@ -5,7 +5,6 @@ const cors = require('cors')
 const morgan = require('morgan')
 require('dotenv').config();
 
-const CarService = require("./services/car")
 const UserAccountService = require("./services/useraccount")
 
 const app = express()
@@ -21,14 +20,12 @@ var dsn = process.env.CONNECTION_STRING
 console.log(`Using database ${dsn}`)
 const db = new pg.Pool({ connectionString:  dsn})
 
-const carService = new CarService(db)
 const userAccountService = new UserAccountService(db)
 const jwt = require('./jwt')(userAccountService)
-require('./api/car')(app, carService, jwt)
 require('./api/useraccount')(app, userAccountService, jwt)
 require('./api/IGDB')(app);
 
-const seedDatabase = async () => require('./datamodel/seeder')(userAccountService, carService)
+const seedDatabase = async () => require('./datamodel/seeder')(userAccountService)
 if (require.main === module) {
     seedDatabase().then( () =>
         app.listen(port, () =>
