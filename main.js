@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false })) // application/x-www-form-ur
 app.use(bodyParser.json()) // application/json
 app.use(cors())
 app.use(morgan('combined')); // toutes les requêtes HTTP dans le log du serveur
+app.use(express.text()); // pour parser le body en texte brut
 
 const port = process.env.PORT || 3333;
 
