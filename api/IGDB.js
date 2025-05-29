@@ -96,4 +96,52 @@ module.exports = (app) => {
             res.status(500).json({ error: "Failed to fetch themes from IGDB" });
         }
     });
+
+    app.get("/api/igdb/modes", async (req, res) => {
+        try {
+            if (!accessToken) {
+                const url = `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`;
+                const response = await fetch(url, { method: "POST" });
+                const data = await response.json();
+                accessToken = data.access_token;
+            }
+            const igdbRes = await fetch("https://api.igdb.com/v4/game_modes", {
+                method: "POST",
+                headers: {
+                    "Client-ID": CLIENT_ID,
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "text/plain"
+                },
+                body: "fields id,name; limit 100;"
+            });
+            const result = await igdbRes.json();
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ error: "Failed to fetch modes from IGDB" });
+        }
+    });
+
+    app.get("/api/igdb/perspectives", async (req, res) => {
+        try {
+            if (!accessToken) {
+                const url = `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`;
+                const response = await fetch(url, { method: "POST" });
+                const data = await response.json();
+                accessToken = data.access_token;
+            }
+            const igdbRes = await fetch("https://api.igdb.com/v4/player_perspectives", {
+                method: "POST",
+                headers: {
+                    "Client-ID": CLIENT_ID,
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "text/plain"
+                },
+                body: "fields id,name; limit 100;"
+            });
+            const result = await igdbRes.json();
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ error: "Failed to fetch perspectives from IGDB" });
+        }
+    });
 };
