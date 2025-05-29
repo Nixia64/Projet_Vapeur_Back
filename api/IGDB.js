@@ -47,4 +47,53 @@ module.exports = (app) => {
             res.status(500).json({ error: "Failed to fetch games from IGDB" });
         }
     });
+
+    app.get("/api/igdb/genres", async (req, res) => {
+        try {
+            // Utilise le même système d'auth que pour les jeux
+            if (!accessToken) {
+                const url = `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`;
+                const response = await fetch(url, { method: "POST" });
+                const data = await response.json();
+                accessToken = data.access_token;
+            }
+            const igdbRes = await fetch("https://api.igdb.com/v4/genres", {
+                method: "POST",
+                headers: {
+                    "Client-ID": CLIENT_ID,
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "text/plain"
+                },
+                body: "fields id,name; limit 100;"
+            });
+            const result = await igdbRes.json();
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ error: "Failed to fetch genres from IGDB" });
+        }
+    });
+
+    app.get("/api/igdb/themes", async (req, res) => {
+        try {
+            if (!accessToken) {
+                const url = `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`;
+                const response = await fetch(url, { method: "POST" });
+                const data = await response.json();
+                accessToken = data.access_token;
+            }
+            const igdbRes = await fetch("https://api.igdb.com/v4/themes", {
+                method: "POST",
+                headers: {
+                    "Client-ID": CLIENT_ID,
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "text/plain"
+                },
+                body: "fields id,name; limit 100;"
+            });
+            const result = await igdbRes.json();
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ error: "Failed to fetch themes from IGDB" });
+        }
+    });
 };
