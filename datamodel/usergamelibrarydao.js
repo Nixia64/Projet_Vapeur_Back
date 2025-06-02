@@ -5,10 +5,10 @@ module.exports = class UserGameLibraryDAO {
         this.db = db;
     }
 
-    async addGame(user_id, igdb_id, game_name, cover_url) {
+    async addGame(user_id, igdb_id, game_name) {
         const result = await this.db.query(
-            `INSERT INTO usergamelibrary (user_id, igdb_id, game_name, cover_url) VALUES ($1, $2, $3, $4) RETURNING id`,
-            [user_id, igdb_id, game_name, cover_url]
+            `INSERT INTO usergamelibrary (user_id, igdb_id, game_name) VALUES ($1, $2, $3) RETURNING id`,
+            [user_id, igdb_id, game_name]
         );
         return result.rows[0]?.id;
     }

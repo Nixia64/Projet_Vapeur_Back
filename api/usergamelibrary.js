@@ -13,11 +13,11 @@ module.exports = (app, db, jwt) => {
 
     app.post('/api/library', jwt.validateJWT, async (req, res) => {
         const user_id = req.user?.id;
-        const { igdb_id, game_name, cover_url } = req.body;
+        const { igdb_id, game_name } = req.body;
         if (!user_id || !igdb_id || !game_name) {
             return res.status(400).json({ error: "Missing parameters" });
         }
-        const result = await service.addGame(user_id, igdb_id, game_name, cover_url);
+        const result = await service.addGame(user_id, igdb_id, game_name);
         res.json({ success: !!result });
     });
 
