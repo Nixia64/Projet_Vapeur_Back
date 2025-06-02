@@ -10,7 +10,11 @@ const UserAccountService = require("./services/useraccount")
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false })) // application/x-www-form-urlencoded
 app.use(bodyParser.json()) // application/json
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:63342", // adapte ce port à celui de ton front
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
+}))
 app.use(morgan('combined')); // toutes les requêtes HTTP dans le log du serveur
 app.use(express.text()); // pour parser le body en texte brut
 
@@ -25,7 +29,7 @@ const userAccountService = new UserAccountService(db)
 const jwt = require('./jwt')(userAccountService)
 require('./api/useraccount')(app, userAccountService, jwt)
 require('./api/IGDB')(app);
-require('./api/usergamelibrary')(app, db)
+require('./api/usergamelibrary')(app, db, jwt)
 
 const seedDatabase = async () => require('./datamodel/seeder')(userAccountService)
 if (require.main === module) {
