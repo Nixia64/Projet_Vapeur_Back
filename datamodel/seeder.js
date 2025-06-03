@@ -19,6 +19,15 @@ module.exports = async (userAccountService) => {
                     user_id INTEGER REFERENCES useraccount(id) ON DELETE CASCADE,
                     igdb_id INTEGER NOT NULL,
                     game_name TEXT NOT NULL,
+                    cover_url TEXT,
+                    developer TEXT,
+                    release_date BIGINT,
+                    rating REAL,
+                    genres JSONB,
+                    themes JSONB,
+                    modes JSONB,
+                    perspectives JSONB,
+                    description TEXT,
                     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);

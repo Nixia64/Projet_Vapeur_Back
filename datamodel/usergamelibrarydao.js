@@ -5,10 +5,26 @@ module.exports = class UserGameLibraryDAO {
         this.db = db;
     }
 
-    async addGame(user_id, igdb_id, game_name) {
+    async addGame(user_id, igdb_id, game_name, cover_url, developer, release_date, rating, genres, themes, modes, perspectives, description) {
         const result = await this.db.query(
-            `INSERT INTO usergamelibrary (user_id, igdb_id, game_name) VALUES ($1, $2, $3) RETURNING id`,
-            [user_id, igdb_id, game_name]
+            `INSERT INTO usergamelibrary
+            (user_id, igdb_id, game_name, cover_url, developer, release_date, rating, genres, themes, modes, perspectives, description)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+            RETURNING id`,
+            [
+                user_id,
+                igdb_id,
+                game_name,
+                cover_url,
+                developer,
+                release_date,
+                rating,
+                JSON.stringify(genres),
+                JSON.stringify(themes),
+                JSON.stringify(modes),
+                JSON.stringify(perspectives),
+                description
+            ]
         );
         return result.rows[0]?.id;
     }
@@ -30,7 +46,7 @@ module.exports = class UserGameLibraryDAO {
 
     async hasGame(user_id, igdb_id) {
         const result = await this.db.query(
-            `SELECT * FROM usergamelibrary WHERE user_id = $1 AND igdb_id = $2`,
+            `SELECT 1 FROM usergamelibrary WHERE user_id = $1 AND igdb_id = $2`,
             [user_id, igdb_id]
         );
         return result.rows.length > 0;

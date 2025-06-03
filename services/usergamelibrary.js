@@ -5,12 +5,15 @@ module.exports = class UserGameLibraryService {
         this.dao = new UserGameLibraryDAO(db);
     }
 
-    async addGame(user_id, igdb_id, game_name) {
+    async addGame(user_id, igdb_id, game_name, cover_url, developer, release_date, rating, genres, themes, modes, perspectives, description) {
         // Optionnel : éviter les doublons
         if (await this.dao.hasGame(user_id, igdb_id)) {
             return null;
         }
-        return this.dao.addGame(user_id, igdb_id, game_name);
+        return this.dao.addGame(
+            user_id, igdb_id, game_name, cover_url, developer,
+            release_date, rating, genres, themes, modes, perspectives, description
+        );
     }
 
     async getGames(user_id) {
