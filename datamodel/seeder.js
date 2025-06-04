@@ -37,6 +37,32 @@ module.exports = async (userAccountService) => {
                 CREATE UNIQUE INDEX IF NOT EXISTS idx_user_game_unique ON usergamelibrary(user_id, igdb_id)
             `);
 
+            // Création de la table usergamewishlist
+            await userAccountService.dao.db.query(`
+                CREATE TABLE IF NOT EXISTS usergamewishlist (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER REFERENCES useraccount(id) ON DELETE CASCADE,
+                    igdb_id INTEGER NOT NULL,
+                    game_name TEXT NOT NULL,
+                    cover_url TEXT,
+                    developer TEXT,
+                    release_date BIGINT,
+                    rating REAL,
+                    genres JSONB,
+                    themes JSONB,
+                    modes JSONB,
+                    perspectives JSONB,
+                    description TEXT,
+                    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    display_index INTEGER DEFAULT 0
+                )
+            `);
+
+            // Index unique pour éviter les doublons (un même jeu par utilisateur)
+            await userAccountService.dao.db.query(`
+                CREATE UNIQUE INDEX IF NOT EXISTS idx_user_wishlist_unique ON usergamewishlist(user_id, igdb_id)
+            `);
+
             resolve();
         } catch(e)  {
             if (e.code === "42P07") { // TABLE ALREADY EXISTS

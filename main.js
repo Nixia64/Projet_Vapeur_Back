@@ -30,6 +30,7 @@ const jwt = require('./jwt')(userAccountService)
 require('./api/useraccount')(app, userAccountService, jwt)
 require('./api/IGDB')(app);
 require('./api/usergamelibrary')(app, db, jwt)
+require('./api/usergamewishlist')(app, db, jwt);
 
 const seedDatabase = async () => require('./datamodel/seeder')(userAccountService)
 if (require.main === module) {
