@@ -73,7 +73,11 @@ module.exports = async (userAccountService) => {
             }
         }
         try {
-            await userAccountService.insert("admin", "admin", "admin");
+            // Vérifie si l'utilisateur admin existe déjà
+            const existingAdmin = await userAccountService.get("admin");
+            if (!existingAdmin) {
+                await userAccountService.insert("admin", "admin", "admin");
+            }
         } catch(e) {
             console.log(e);
             reject(e);
