@@ -50,4 +50,20 @@ module.exports = (app, svc, jwt) => {
         return res.status(await svc.get(req.params.login) == null ? 404 : 200).end()
     })
 
+    // Endpoint pour récupérer les infos du user connecté
+    app.get("/useraccount/me", jwt.validateJWT, async (req, res) => {
+        try {
+            // req.user est rempli par le middleware JWT, il contient au moins le login
+            const user = await svc.get(req.user.login);
+            if (!user) return res.status(404).end();
+            res.json({
+                displayname: user.displayname,
+                login: user.login
+            });
+        } catch (e) {
+            console.log(e);
+            res.status(500).end();
+        }
+    });
+
 }
