@@ -11,7 +11,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false })) // application/x-www-form-urlencoded
 app.use(bodyParser.json()) // application/json
 app.use(cors({
-    origin: "http://localhost:63342", // adapte ce port à celui de ton front
+    origin: true, // ou "*" mais true permet credentials
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
