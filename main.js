@@ -16,7 +16,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
 app.use(morgan('combined')); // toutes les requêtes HTTP dans le log du serveur
-app.use(express.text()); // pour parser le body en texte brut
+app.use(express.text()); // pour parser le body en texte
 
 const port = process.env.PORT || 3333;
 
